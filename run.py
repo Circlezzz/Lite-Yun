@@ -17,6 +17,7 @@ import base64
 from concurrent.futures import ThreadPoolExecutor
 
 import psutil
+import cpuinfo
 import sh
 import tornado.concurrent
 import tornado.gen
@@ -89,7 +90,7 @@ class SysteminfoHandler(tornado.websocket.WebSocketHandler):
         downdata.append(psutil.net_io_counters().bytes_recv -
                         self.application.initDownload)
         SystemInfo = {'cpu_info': psutil.cpu_percent(percpu=True),
-                      'sys_info': [platform.node(), platform.version(), platform.release(), platform.processor(), psutil.cpu_freq().max, psutil.virtual_memory().total, datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%Y-%m-%d %H:%M:%S")],
+                      'sys_info': [platform.node(), platform.version(), platform.release(), platform.processor(), cpuinfo.get_cpu_info()['hz_advertised'], psutil.virtual_memory().total, datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%Y-%m-%d %H:%M:%S")],
                       'mem_info': [
             psutil.virtual_memory().used, psutil.virtual_memory().total],
             'swap_info': [psutil.swap_memory().used, psutil.swap_memory().total],

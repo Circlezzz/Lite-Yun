@@ -487,7 +487,7 @@
     }
   });
 
-  var ws = new WebSocket("ws://localhost:8000/Systeminfo");
+  var ws = new WebSocket("ws://192.168.79.130:8000/Systeminfo");
   ws.onmessage = function (e) {
     var callback=$.parseJSON(e.data);
     $("#log_info").html(callback.log_info);
@@ -506,7 +506,7 @@
     for(var i=1;i<=callback.cpu_info.length;i++){
       l.push("Core"+i);
     }
-    cpuChart.labels=l;
+    cpuChart.data.labels=l;
     cpuChart.data.datasets[0].data=callback.cpu_info;
     cpuChart.update();
 
