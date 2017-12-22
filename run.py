@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding:utf-8 -*-
 
+import base64
 import datetime
 import grp
 import json
@@ -13,11 +14,10 @@ import time
 import urllib
 import uuid
 import zipfile
-import base64
 from concurrent.futures import ThreadPoolExecutor
 
-import psutil
 import cpuinfo
+import psutil
 import sh
 import tornado.concurrent
 import tornado.gen

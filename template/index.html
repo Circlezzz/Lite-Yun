@@ -323,14 +323,15 @@
             <div class="card-body">
               <div>
                 <p class="text-muted" id="sys_info">
-                    Host: <br>
-                    OS: <br>
-                    Kernel: <br>
-                    CPU: <br>
-                    CPU frequency: <br>
-                    Memory: <br>
-                    Boot time: <br>
-                  </p>
+                  Host:
+                  <br> OS:
+                  <br> Kernel:
+                  <br> CPU:
+                  <br> CPU frequency:
+                  <br> Memory:
+                  <br> Boot time:
+                  <br>
+                </p>
               </div>
             </div>
             <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
@@ -394,26 +395,26 @@
     data: {
       datasets: [{
         label: 'Upload',
-        data: [10, 20, 30, 40],
+        data: [0, 0, 0, 0, 0, 0],
         backgroundColor: "rgba(178,178,178,0.5)",
         borderColor: "rgb(255,255,255)",
         borderWidth: "5"
       }, {
         label: 'Download',
-        data: [40, 30, 20, 10],
+        data: [0, 0, 0, 0, 0, 0],
         backgroundColor: "rgba(46,149,255,0.5)",
         borderColor: "rgb(255,255,255)",
         borderWidth: "5"
       }, {
         label: 'Total',
-        data: [50, 100, 80, 50],
+        data: [0, 0, 0, 0, 0, 0],
         fill: true,
         backgroundColor: "rgba(255,205,86,0.3)",
         borderColor: "rgb(255,205,86)",
         pointRadius: "5",
         type: 'line',
       }],
-      labels: ['January', 'February', 'March', 'April']
+      labels: ['1', '2', '3', '4', '5', '6']
     },
     options: {
       scales: {
@@ -433,11 +434,11 @@
     type: 'horizontalBar',
     data: {
       datasets: [{
-        data: [10, 20, 30, 40],
+        data: [0],
         backgroundColor: "rgba(46,255,135,0.5)",
         label: "usage"
       }],
-      labels: ['Core1', 'Core2', 'Core3', 'Core4']
+      labels: ['Core1']
     },
     options: {
       scales: {
@@ -455,10 +456,10 @@
     type: 'pie',
     data: {
       datasets: [{
-        data: [10, 10],
+        data: [0, 0],
         backgroundColor: ["rgba(255,233,46,0.5)", "rgba(220,220,220,0.5)"],
       }, {
-        data: [30, 70],
+        data: [0, 0],
         backgroundColor: ["rgba(255,233,46,0.5)", "rgba(220,220,220,0.5)"],
       }],
       labels: ['used', 'free'],
@@ -469,9 +470,9 @@
     type: 'horizontalBar',
     data: {
       datasets: [{
-        data: [10, 20],
+        data: [0, 0],
         backgroundColor: "rgba(255,110,46,0.5)",
-        label:"usage",
+        label: "usage",
       }],
       labels: ['/', '/home']
     },
@@ -489,51 +490,51 @@
 
   var ws = new WebSocket("ws://192.168.79.130:8000/Systeminfo");
   ws.onmessage = function (e) {
-    var callback=$.parseJSON(e.data);
+    var callback = $.parseJSON(e.data);
     $("#log_info").html(callback.log_info);
 
-    var data="";
-    data+="Host: "+callback.sys_info[0]+"<br>";
-    data+="OS: "+callback.sys_info[1]+"<br>";
-    data+="Kernel: "+callback.sys_info[2]+"<br>";
-    data+="CPU: "+callback.sys_info[3]+"<br>";
-    data+="CPU frequency: "+callback.sys_info[4]+"<br>";
-    data+="Memory: "+callback.sys_info[5]+"<br>";
-    data+="Boot time: "+callback.sys_info[6]+"<br>";
+    var data = "";
+    data += "Host: " + callback.sys_info[0] + "<br>";
+    data += "OS: " + callback.sys_info[1] + "<br>";
+    data += "Kernel: " + callback.sys_info[2] + "<br>";
+    data += "CPU: " + callback.sys_info[3] + "<br>";
+    data += "CPU frequency: " + callback.sys_info[4] + "<br>";
+    data += "Memory: " + callback.sys_info[5] + "<br>";
+    data += "Boot time: " + callback.sys_info[6] + "<br>";
     $("#sys_info").html(data);
 
-    var l=new Array();
-    for(var i=1;i<=callback.cpu_info.length;i++){
-      l.push("Core"+i);
+    var l = new Array();
+    for (var i = 1; i <= callback.cpu_info.length; i++) {
+      l.push("Core" + i);
     }
-    cpuChart.data.labels=l;
-    cpuChart.data.datasets[0].data=callback.cpu_info;
+    cpuChart.data.labels = l;
+    cpuChart.data.datasets[0].data = callback.cpu_info;
     cpuChart.update();
 
-    memChart.data.datasets[0].data=callback.mem_info;
-    memChart.data.datasets[1].data=callback.swap_info;
+    memChart.data.datasets[0].data = callback.mem_info;
+    memChart.data.datasets[1].data = callback.swap_info;
     memChart.update();
 
-    l=new Array();
-    for(var i=0;i<callback.disk_info.length;i++){
+    l = new Array();
+    for (var i = 0; i < callback.disk_info.length; i++) {
       l.push(callback.disk_info[i][0]);
     }
-    diskChart.data.labels=l;
-    l=new Array();
-    for(var i=0;i<callback.disk_info.length;i++){
-      l.push(callback.disk_info[i][1]/callback.disk_info[i][2]);
+    diskChart.data.labels = l;
+    l = new Array();
+    for (var i = 0; i < callback.disk_info.length; i++) {
+      l.push(callback.disk_info[i][1] / callback.disk_info[i][2]);
     }
-    diskChart.data.datasets[0].data=l;
+    diskChart.data.datasets[0].data = l;
     diskChart.update();
 
-    networkChart.data.labels=callback.network_info[0];
+    networkChart.data.labels = callback.network_info[0];
     console.log(callback.network_info[0]);
     console.log(callback.network_info[1]);
     console.log(callback.network_info[2]);
     console.log(callback.network_info[3]);
-    networkChart.data.datasets[0].data=callback.network_info[1];
-    networkChart.data.datasets[1].data=callback.network_info[2];
-    networkChart.data.datasets[2].data=callback.network_info[3];
+    networkChart.data.datasets[0].data = callback.network_info[1];
+    networkChart.data.datasets[1].data = callback.network_info[2];
+    networkChart.data.datasets[2].data = callback.network_info[3];
     networkChart.update();
 
   }
